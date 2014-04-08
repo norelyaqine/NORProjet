@@ -1,0 +1,521 @@
+<!-- AUI Framework -->
+<!DOCTYPE html>
+
+<?php
+    session_start();
+    if (!isset($_SESSION['login'])) {
+         header('location: login1.php');
+    }
+?>
+
+<?php
+
+$n = $_SESSION['login'];
+mysql_connect('localhost',"root","");
+mysql_select_db('gestion_projet');
+$requette = mysql_query ("SELECT * from login where login = '".$n."' ");
+$donnee=mysql_fetch_array($requette);
+$chef_projet = $donnee['nom'];
+$query5 = mysql_query ("SELECT * from ressource where chef_projet='".$chef_projet."'");
+
+?>
+
+    <html>
+    <head>
+
+<style type="text/css" media="screen">
+    #gantt_here{
+        margin-top: 0px;
+
+    }  
+</style>
+
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <title>Acceuil | NORProject</title>
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+        <!-- Favicons -->
+        <script src="codebase/dhtmlxgantt.js"></script>
+        <link href="codebase/dhtmlxgantt.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="css/nv.css">
+
+
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/images/icons/apple-touch-icon-144-precomposed.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/images/icons/apple-touch-icon-114-precomposed.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/images/icons/apple-touch-icon-72-precomposed.png" />
+        <link rel="apple-touch-icon-precomposed" href="assets/images/icons/apple-touch-icon-57-precomposed.png" />
+        <link rel="shortcut icon" href="assets/images/icons/favicon.png" />
+
+     
+
+        <link rel="stylesheet" type="text/css" href="assets/css/minified/aui-production.min.css" />
+
+        <!-- Theme UI -->
+
+        <link id="layout-theme" rel="stylesheet" type="text/css" href="assets/themes/minified/fides/color-schemes/dark-blue.min.css" />
+
+        <!-- Fides Admin Responsive -->
+
+        <link rel="stylesheet" type="text/css" href="assets/themes/minified/fides/common.min.css" />
+        <link rel="stylesheet" type="text/css" href="assets/themes/minified/fides/responsive.min.css" />
+
+        <!-- Fides Admin JS -->
+
+        <script type="text/javascript" src="assets/js/minified/aui-production.min.js"></script>
+
+        <script>
+            jQuery(window).load(
+                function(){
+
+                    var wait_loading = window.setTimeout( function(){
+                      $('#loading').slideUp('fast');
+                      jQuery('body').css('overflow','auto');
+                    },1000
+                    );
+
+                });
+
+        </script>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+    <body style="overflow: hidden;">
+        
+
+        <div id="loading" class="ui-front loader ui-widget-overlay bg-white opacity-100">
+            <img src="assets/images/loader-dark.gif" alt="" />
+        </div>
+
+        <div id="page-wrapper" class="demo-example">
+
+            
+
+            <div id="page-header" class="clearfix">
+                <div id="header-logo">
+                    <a href="javascript:;" class="tooltip-button" data-placement="bottom" title="Fermer le Menu" id="close-sidebar">
+                        <i class="glyph-icon icon-caret-left"></i>
+                    </a>
+                    <a href="javascript:;" class="tooltip-button hidden" data-placement="bottom" title="Ouvrir le Menu" id="rm-close-sidebar">
+                        <i class="glyph-icon icon-caret-right"></i>
+                    </a>
+                    <a href="javascript:;" class="tooltip-button hidden" title="Navigation Menu" id="responsive-open-menu">
+                        <i class="glyph-icon icon-align-justify"></i>
+                    </a>
+                    NORProject <i class="opacity-80"> 1.0</i>
+                </div>
+                <div class="hide" id="black-modal-60" title="About">
+                    <div class="pad20A">
+
+                        <div class="infobox notice-bg">
+                            <div class="bg-azure large btn info-icon">
+                                <i class="glyph-icon icon-bullhorn"></i>
+                            </div>
+                            <h4 class="infobox-title">About</h4>
+                            <p>Merci bien d'avoir utiliser notre projet.</p>
+                        </div>
+
+                        <h4 class="heading-1 mrg20T clearfix">
+                            <div class="heading-content" style="width: auto;">
+                                Qui somme nous ? 
+                                <small>
+                                    Text text text Text text text Text text text Text text text Text text text Text text text 
+                                </small>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="divider"></div>
+                        </h4>
+
+                        
+
+                    </div>
+                </div>
+
+                <div class="user-profile dropdown">
+                    <a href="javascript:;" title="" class="user-ico clearfix" data-toggle="dropdown">
+                        
+                        <span><?php echo $donnee['nom'] ; ?></span>
+                        <i class="glyph-icon icon-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu float-right">
+                        <li>
+                            <a href="javascript:;" title="">
+                                <i class="glyph-icon icon-user mrg5R"></i>
+                                Profil Detaille
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;" title="">
+                                <i class="glyph-icon icon-cog mrg5R"></i>
+                                Modifier Profil
+                            </a>
+                        </li>
+                       
+                        <li>
+                            <a href="logout.php" title="">
+                                <i class="glyph-icon icon-signout font-size-13 mrg5R"></i>
+                                <span class="font-bold">Logout</span>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li class="dropdown-submenu float-left">
+                            <a href="javascript:;" data-toggle="dropdown" title="">
+                                Dropdown menu
+                            </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="javascript:;" title="">
+                                            Submenu 1
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" title="">
+                                            Submenu 2
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-submenu">
+                                        <a href="javascript:;" title="">
+                                            Submenu 3
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a href="javascript:;" title="">
+                                                    Submenu 2-1
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:;" title="">
+                                                    Submenu 2-2
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:;" title="">
+                                Another menu item
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="dropdown dash-menu">
+                    <a href="javascript:;" data-toggle="dropdown" data-placement="left" class="medium btn primary-bg float-right popover-button-header hidden-mobile tooltip-button" title="Menu">
+                        <i class="glyph-icon icon-th"></i>
+                    </a>
+                    <div class="dropdown-menu float-right">
+                        <div class="small-box">
+                            
+
+                            <div class="bg-gray text-transform-upr font-size-12 font-bold font-gray-dark pad10A">Menu</div>
+                            <div class="pad10A dashboard-buttons clearfix">
+                                <a href="acceuil.php" class="btn vertical-button remove-border bg-blue" title="">
+                                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                                        <i class="glyph-icon icon-dashboard opacity-80 font-size-20"></i>
+                                    </span>
+                                    <span class="button-content">Acceuil</span>
+                                </a>
+                                <a href="affressource.php" class="btn vertical-button remove-border bg-red" title="">
+                                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                                        <i class="glyph-icon icon-tags opacity-80 font-size-20"></i>
+                                    </span>
+                                    <span class="button-content">Ressources</span>
+                                </a>
+                                <a href="javascript:;" class="btn vertical-button remove-border bg-purple" title="">
+                                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                                        <i class="glyph-icon icon-reorder opacity-80 font-size-20"></i>
+                                    </span>
+                                    <span class="button-content">Help </span>
+                                </a>
+                            <!--    <a href="javascript:;" class="btn vertical-button remove-border bg-azure" title="">
+                                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                                        <i class="glyph-icon icon-bar-chart opacity-80 font-size-20"></i>
+                                    </span>
+                                    <span class="button-content">Charts</span>
+                                </a>
+                                <a href="javascript:;" class="btn vertical-button remove-border bg-yellow" title="">
+                                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                                        <i class="glyph-icon icon-laptop opacity-80 font-size-20"></i>
+                                    </span>
+                                    <span class="button-content">Buttons</span>
+                                </a> 
+                                <a href="javascript:;" class="btn vertical-button remove-border bg-orange" title="">
+                                    <span class="glyph-icon icon-separator-vertical pad0A medium">
+                                        <i class="glyph-icon icon-code opacity-80 font-size-20"></i>
+                                    </span>
+                                    <span class="button-content">Panels</span>
+                                </a>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+
+            </div><!-- #page-header -->
+
+            <div id="page-sidebar" class="scrollable-content">
+
+                <div id="sidebar-menu">
+                    <ul>
+                        <li>
+                            <a href="acceuil.php" title="Acceuil">
+                                <i class="glyph-icon icon-dashboard"></i>
+                                Acceuil
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;" title="Ressources">
+                                <i class="glyph-icon icon-table"></i>
+                               Ressources
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="ressource.php" title="Nouveau Ressource">
+                                        <i class="glyph-icon icon-chevron-right"></i>
+                                        Nouveau Ressource
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="rechmodressource.php" title="Nouveau Ressource">
+                                        <i class="glyph-icon icon-chevron-right"></i>
+                                        Modifier Ressource
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="rechsupressource.php" title="Nouveau Ressource">
+                                        <i class="glyph-icon icon-chevron-right"></i>
+                                        Supprimer Ressource
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="affressource.php" title="Affichage des Ressources">
+                                        <i class="glyph-icon icon-chevron-right"></i>
+                                        Affichage des Ressources
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                         <li>
+                            <a href="javascript:;" title="Elements">
+                                <i class="glyph-icon icon-laptop"></i>
+                                Traitement de Projet
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="nvprojet.php" title="Content Boxes">
+                                        <i class="glyph-icon icon-chevron-right"></i>
+                                        Nouveau Projet
+                                    </a>
+                                </li>
+                                
+                                
+                                <li>
+                                    <a href="rechmodprojet.php" title="Response Messages">
+                                        <i class="glyph-icon icon-chevron-right"></i>
+                                        Modifier un Projet
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="rechsupprojet.php" title="Badges &amp; Labels">
+                                        <i class="glyph-icon icon-chevron-right"></i>
+                                        Supprimer un Projet
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="affprojet.php" title="Overlays">
+                                        <i class="glyph-icon icon-chevron-right"></i>
+                                        Afficahge des Projets
+                                    </a>
+                                </li>
+                                
+                                
+                                
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:;" title="Elements">
+                                <i class="glyph-icon icon-bar-chart"></i>
+                                Planification
+                            </a>
+                            <ul>
+                                
+                                <li>
+                                    <a href="myGantt0.php" title="Icons">
+                                        <i class="glyph-icon icon-chevron-right"></i>
+                                        Gantt
+                                    </a>
+                                </li>
+                               
+                                
+                                
+                            </ul>
+                        </li>
+                    
+                        <li>
+                            <a href="javascript:;" title="Help &amp; Support">
+                                <i class="glyph-icon icon-book"></i>
+                                Help &amp; Support
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="docs.html" title="Getting started guide">
+                                        <i class="glyph-icon icon-chevron-right"></i>
+                                        Getting started guide
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="http://agileui.com/support-forums" title="Support forums">
+                                        <i class="glyph-icon icon-chevron-right"></i>
+                                        Support forums
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                  
+                </div>
+
+            </div><!-- #page-sidebar -->
+            <div id="page-content-wrapper">
+                <div id="page-title">
+
+                           <h3>
+                             NORProject
+                            <small>
+                                 Application gestion de projet
+                             </small>
+                         </h3>
+                    <div id="breadcrumb-right">
+                        <div id="sidebar-search">
+                            <input type="text" placeholder="Search..." class="autocomplete-input input tooltip-button" data-placement="bottom" title="Type &apos;jav&apos; to see the available tags..." id="" name="" />
+                            <i class="glyph-icon icon-search"></i>
+                        </div>
+                        <div class="float-right">
+                            <a href="javascript:;" class="btn medium bg-white tooltip-button black-modal-60 mrg5R" data-placement="bottom" title="About">
+                                <span class="button-content">
+                                    <i class="glyph-icon icon-question"></i>
+                                </span>
+                            </a>
+
+                            <div class="dropdown">
+                                <a href="javascript:;" class="btn medium bg-white" title="Example dropdown" data-toggle="dropdown">
+                                    <span class="button-content">
+                                        <i class="glyph-icon icon-cog float-left"></i>
+                                        <i class="glyph-icon icon-caret-down float-right"></i>
+                                    </span>
+                                </a>
+
+ <!--  ************* Forme exemple  ******************  -->   
+
+                                <div class="dropdown-menu pad0A float-right">
+                                    <div class="medium-box">
+                                        <div class="bg-gray text-transform-upr font-size-12 font-bold font-gray-dark pad10A">Nouveau projet</div>
+                                        <div class="pad10A">
+                                            <p class="font-gray-dark pad0B">Vous pouvez ajouter un <span class="label bg-blue-alt">Nouveau projet</span> Rapidement </p>
+                                            <div class="divider mrg10T mrg10B"></div>
+
+                                                <form id="demo-form" action="" class="col-md-12" method="POST" />
+                                                    <div class="form-row">
+                                                        <div class="form-label col-md-4">
+                                                            <label for="">
+                                                                Nom du projet:
+                                                                <span class="required">*</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-input col-md-8">
+                                                            <input type="text" id="email" name="nom" data-type="email" data-trigger="change" data-required="true" class="parsley-validated" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-label col-md-4">
+                                                            <label for="">
+                                                                 Chef du projet:
+                                                                <span class="required">*</span>
+                                                            </label>
+                                                        </div>
+                                                         <div class="form-input col-md-8">
+                 <?php
+                            echo "<select name='chef' id='selection'>";
+                            while($rows2=mysql_fetch_assoc($query5))
+                        
+
+                              echo   "<option value=".$rows2['nom']." >".$rows2['nom']." </option>";
+                              
+                           echo" </select>";
+                            ?>
+                </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-label col-md-4">
+                                                            <label for="">
+                                                                Date du debut:
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-input">
+                    <input type="text" class="col-md-3" id="datepicker2" name="date" />
+                </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-label col-md-4">
+                                                            <label for="" class="label-description">
+                                                               Note:
+                                                                 <span>200 chars max</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-input col-md-8">
+                                                            <textarea id="message" name="note" data-trigger="keyup" data-rangelength="[20,200]" class="parsley-validated"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="divider"></div>
+                                                    <div class="form-row">
+                                                        <input type="hidden" name="superhidden" id="superhidden" />
+                                                        <div class="form-input col-md-8 col-md-offset-4">
+                                                             <input type="submit" title="Validate!" >
+                                                        </div>
+                                                    </div>
+
+                                                </form>
+
+                                        </div>
+
+                                        <div class="bg-black font-size-12 font-orange pad10A mrg5L mrg5R">Text text text</div>
+                                        <div class="pad15A">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+</div><!-- #page-title -->
+
+<!-- Menu -->
+
+
+<?php 
+
+if ( isset($_POST['nom']) && isset($_POST['chef']) && isset($_POST['date']) && isset($_POST['note'])) {
+
+$nom1=$_POST['nom'];
+$chef=$_POST['chef'];
+$date=$_POST['date'];
+$note=$_POST['note'];
+
+
+
+
+mysql_connect('localhost',"root","");
+mysql_select_db('gestion_projet');
+mysql_query ("INSERT INTO projet(nom,chef,date_debut,note,chef_projet) VALUES('$nom1','$chef','$date','$note','$chef_projet')");
+
+}
+
+?>
+
+
+
+
+
